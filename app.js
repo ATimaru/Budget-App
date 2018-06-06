@@ -1,6 +1,29 @@
 //Budget controller
 var budgetController = (function() {
 
+  var Expense = function(id, description, value) {
+    this.id = id;
+    this.description = description;
+    this.Value = value;
+  };
+
+  var Income = function(id, description, value) {
+    this.id = id;
+    this.description = description;
+    this.Value = value;
+  };
+
+  var data = {
+    allItems: {
+      exp: [],
+      inc: []
+    },
+    totals: {
+      exp: 0,
+      inc: 0
+    }
+  }
+
 })();
 
 //UI budgetController
@@ -31,13 +54,23 @@ var UIController = (function() {
 //Global app controller
 var controller = (function(budgetCtrl, UICtrl) {
 
-  var DOM = UICtrl.getDOMstrings();
+  var setupEventListeners = function() {
+    var DOM = UICtrl.getDOMstrings();
+    $(DOM.inputBtn).click(ctrlAddItem);
+    $(document).keypress(function(event) {
+      if (event.keyCode === 13 || event.which === 13) {
+        ctrlAddItem();
+      }
+    });
+  };
+
+
 
   var ctrlAddItem = function() {
 
     //1. get the field input data
     var input = UICtrl.getinput();
-    console.log(input);
+
     //2. ghe the add item to the budget budgetController
 
     //3. add the new item to the UI
@@ -46,15 +79,15 @@ var controller = (function(budgetCtrl, UICtrl) {
 
     //5. display the budget on the UI
 
+  };
+
+return {
+  init: function() {
+    console.log("app started");
+    setupEventListeners();
   }
-
-  $(DOM.inputBtn).click(ctrlAddItem);
-
-  $(document).keypress(function(event) {
-    if (event.keyCode === 13 || event.which === 13) {
-      ctrlAddItem();
-    }
-
-  });
+};
 
 })(budgetController, UIController);
+
+controller.init();
